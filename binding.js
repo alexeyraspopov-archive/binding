@@ -166,7 +166,7 @@ binding.directive('repeat', function(element, scope, dataset){
 
 			childScope = binding.adapter.inherit(scope);
 			childScope[local] = array[index];
-			bind(childScope, child);
+			binding.apply(childScope, child);
 
 			parent.insertBefore(child, marker.nextElementSibling);
 			elements.push(child);
