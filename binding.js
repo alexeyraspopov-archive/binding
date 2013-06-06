@@ -118,7 +118,7 @@ binding.directive('repeat', function(element, scope, dataset){
 		matches = dataset.repeat.match(/^(.+)\s+in\s+(.+)$/),
 		local = matches[1],
 		arrayName = matches[2],
-		array = scope.get(arrayName),
+		array = binding.adapter.read(scope, arrayName),
 		elements = [],
 		parent = element.parentNode,
 		created = [],
@@ -164,7 +164,7 @@ binding.directive('repeat', function(element, scope, dataset){
 
 			child = element.cloneNode(true);
 
-			childScope = scope.new();
+			childScope = binding.adapter.inherit(scope);
 			childScope[local] = array[index];
 			bind(childScope, child);
 

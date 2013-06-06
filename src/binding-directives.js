@@ -49,7 +49,7 @@ binding.directive('repeat', function(element, scope, dataset){
 		matches = dataset.repeat.match(/^(.+)\s+in\s+(.+)$/),
 		local = matches[1],
 		arrayName = matches[2],
-		array = scope.get(arrayName),
+		array = binding.adapter.read(scope, arrayName),
 		elements = [],
 		parent = element.parentNode,
 		created = [],
