@@ -6,7 +6,7 @@ binding.directive('bind', function(element, scope, dataset){
 
 binding.directive('click', function(element, scope, dataset){
 	element.addEventListener('click', function(){
-		binding.adapter.write(scope, dataset.click);
+		binding.adapter.publish(scope, dataset.click);
 	});
 });
 
@@ -18,7 +18,7 @@ binding.directive('model', function(element, scope, dataset){
 	});
 
 	element.addEventListener('change', function(){
-		binding.adapter.write(scope, dataset.model, element[value]);
+		binding.adapter.publish(scope, dataset.model, element[value]);
 	});
 });
 
@@ -94,9 +94,7 @@ binding.directive('repeat', function(element, scope, dataset){
 			}
 
 			child = element.cloneNode(true);
-
 			childScope = Object.create(scope);
-
 			childScope[local] = array[index];
 			binding.apply(childScope, child);
 

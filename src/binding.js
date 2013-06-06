@@ -21,7 +21,7 @@ binding.adapter = {
 	read: function(scope, keypath){
 		return scope[keypath];
 	},
-	write: function(scope, keypath, value){
+	publish: function(scope, keypath, value){
 		scope[keypath] = value;
 	}
 };
