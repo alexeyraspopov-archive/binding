@@ -28,7 +28,7 @@ binding.adapter = {
 
 binding.apply = function(scope, root){
 	var nodes = children(root), node, skipNodes = [],
-		keys, i, j;
+		keys, i, j, directive;
 
 	scope = binding.adapter.scope(scope);
 
