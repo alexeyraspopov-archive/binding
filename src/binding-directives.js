@@ -95,7 +95,8 @@ binding.directive('repeat', function(element, scope, dataset){
 
 			child = element.cloneNode(true);
 
-			childScope = binding.adapter.inherit(scope);
+			childScope = Object.create(scope);
+
 			childScope[local] = array[index];
 			binding.apply(childScope, child);
 

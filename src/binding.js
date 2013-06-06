@@ -15,6 +15,9 @@ binding.adapter = {
 	watch: function(){
 		throw new Error('You should declare binding adapter');
 	},
+	unwatch: function(){
+		throw new Error('You should declare binding adapter');
+	},
 	read: function(scope, keypath){
 		return scope[keypath];
 	},

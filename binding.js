@@ -17,6 +17,9 @@ binding.adapter = {
 	watch: function(){
 		throw new Error('You should declare binding adapter');
 	},
+	unwatch: function(){
+		throw new Error('You should declare binding adapter');
+	},
 	read: function(scope, keypath){
 		return scope[keypath];
 	},
@@ -158,7 +161,8 @@ binding.directive('repeat', function(element, scope, dataset){
 
 			child = element.cloneNode(true);
 
-			childScope = binding.adapter.inherit(scope);
+			childScope = Object.create(scope);
+
 			childScope[local] = array[index];
 			binding.apply(childScope, child);
 
