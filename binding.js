@@ -60,10 +60,8 @@ binding.apply = function(scope, root){
 };
 
 binding.directive = function(name, constructor, scoped){
-	if(!directives.hasOwnProperty(name)){
-		directives[name] = constructor;
-		constructor.scoped = scoped;
-	}
+	directives[name] = constructor;
+	constructor.scoped = scoped;
 };
 
 factory('binding', binding);
