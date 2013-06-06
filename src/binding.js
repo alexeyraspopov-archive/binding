@@ -12,9 +12,6 @@ function children(root){
 }
 
 binding.adapter = {
-	scope: function(object){
-		return object;
-	},
 	watch: function(){
 		throw new Error('You should declare binding adapter');
 	},
@@ -26,11 +23,10 @@ binding.adapter = {
 	}
 };
 
+// TODO: bind root element
 binding.apply = function(scope, root){
 	var nodes = children(root), node, skipNodes = [],
 		keys, i, j, directive;
-
-	scope = binding.adapter.scope(scope);
 
 	for(i = 0; i < nodes.length; i++){
 		node = nodes[i];
