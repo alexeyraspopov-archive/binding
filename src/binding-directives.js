@@ -1,5 +1,5 @@
 binding.directive('bind', function(element, scope, dataset){
-	binding.adapter.watch(dataset.bind, function(value){
+	binding.adapter.watch(scope, dataset.bind, function(value){
 		element.textContent = value;
 	});
 });
@@ -13,7 +13,7 @@ binding.directive('click', function(element, scope, dataset){
 binding.directive('model', function(element, scope, dataset){
 	var value = element.type === 'text' ? 'value' : 'checked';
 
-	binding.adapter.watch(dataset.model, function(data){
+	binding.adapter.watch(scope, dataset.model, function(data){
 		element[value] = data;
 	});
 
@@ -27,7 +27,7 @@ binding.directive('class', function(element, scope, dataset){
 		index, matches, bindClass;
 
 	bindClass = function(className, expression){
-		binding.adapter.watch(expression, function(value){
+		binding.adapter.watch(scope, expression, function(value){
 			value = !!value;
 
 			if(value){
@@ -58,7 +58,7 @@ binding.directive('repeat', function(element, scope, dataset){
 	parent.insertBefore(marker, element);
 	parent.removeChild(element);
 
-	binding.adapter.watch(function(){
+	binding.adapter.watch(scope, function(){
 		var index;
 
 		if(array.length !== created.length){
