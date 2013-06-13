@@ -28,33 +28,52 @@ binding.adapter = {
 	}
 };
 
-// TODO: bind root element
 binding.apply = function(scope, root){
-	var nodes = children(root), node, skipNodes = [],
-		keys, i, j, directive;
+	var nodes = children(root), index, skipNodes = [], compile, filters;
 
-	for(i = 0; i < nodes.length; i++){
-		node = nodes[i];
+	filters = function(node, directive){
+		var pipe = node.dataset[directive].split(/\s*\|\s*/);
 
-		if(skipNodes.indexOf(node) > -1){
-			continue;
+		node.dataset[directive] = pipe[0];
+
+		return pipe.slice(1);
+	};
+
+	compile = function(node){
+		var keys, index, directive, filter, scoped;
+
+		if(skipNodes.indexOf(node) !== -1){
+			return;
 		}
 
 		keys = Object.keys(node.dataset);
 
-		for(j = 0; j < keys.length; j++){
-			directive = directives[keys[j]];
+		for(index = 0; index < keys.length; index++){
+			directive = directives[keys[index]];
+			filter = filters(node, keys[index]);
+
+			console.log(filter);
 
 			if(!directive){
 				continue;
 			}
 
-			if(directive.scoped){
+			if(directive.scoped/* && !node.scoped*/){
 				skipNodes = skipNodes.concat(children(node));
 			}
 
-			directive(node, scope, node.dataset);
+			directive(node, scope, node.dataset, filter);
+
+			/*if(node.scoped){
+				break;
+			}*/
 		}
+	};
+
+	// compile(root);
+
+	for(index = 0; index < nodes.length; index++){
+		compile(nodes[index]);
 	}
 };
 
@@ -67,6 +86,12 @@ factory('binding', binding);
 binding.directive('bind', function(element, scope, dataset){
 	binding.adapter.watch(scope, dataset.bind, function(value){
 		element.textContent = value;
+	});
+});
+
+binding.directive('html', function(element, scope, dataset){
+	binding.adapter.watch(scope, dataset.bind, function(value){
+		element.innerHTML = value;
 	});
 });
 
@@ -121,6 +146,11 @@ binding.directive('repeat', function(element, scope, dataset){
 		created = [],
 		tick = 0;
 
+	/*if(element.scoped){
+		return;
+	}*/
+
+	// element.scoped = true;
 	parent.insertBefore(marker, element);
 	parent.removeChild(element);
 
@@ -142,7 +172,6 @@ binding.directive('repeat', function(element, scope, dataset){
 
 		for(index = 0; index < created.length; index++){
 			if(array.indexOf(created[index]) === -1){
-				parent.removeChild(elements[index]);
 				deleted.push(created[index]);
 			}
 		}
@@ -150,6 +179,7 @@ binding.directive('repeat', function(element, scope, dataset){
 		for(index = 0; index < deleted.length; index++){
 			deletedIndex = created.indexOf(deleted[index]);
 
+			parent.removeChild(elements[deletedIndex]);
 			created.splice(deletedIndex, 1);
 			elements.splice(deletedIndex, 1);
 		}
@@ -160,6 +190,7 @@ binding.directive('repeat', function(element, scope, dataset){
 			}
 
 			child = element.cloneNode(true);
+			// child.scoped = true;
 			childScope = Object.create(scope);
 			childScope[local] = array[index];
 			binding.apply(childScope, child);

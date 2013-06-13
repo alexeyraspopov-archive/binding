@@ -4,6 +4,12 @@ binding.directive('bind', function(element, scope, dataset){
 	});
 });
 
+binding.directive('html', function(element, scope, dataset){
+	binding.adapter.watch(scope, dataset.bind, function(value){
+		element.innerHTML = value;
+	});
+});
+
 binding.directive('click', function(element, scope, dataset){
 	element.addEventListener('click', function(){
 		binding.adapter.publish(scope, dataset.click);
@@ -55,6 +61,11 @@ binding.directive('repeat', function(element, scope, dataset){
 		created = [],
 		tick = 0;
 
+	/*if(element.scoped){
+		return;
+	}*/
+
+	// element.scoped = true;
 	parent.insertBefore(marker, element);
 	parent.removeChild(element);
 
@@ -76,7 +87,6 @@ binding.directive('repeat', function(element, scope, dataset){
 
 		for(index = 0; index < created.length; index++){
 			if(array.indexOf(created[index]) === -1){
-				parent.removeChild(elements[index]);
 				deleted.push(created[index]);
 			}
 		}
@@ -84,6 +94,7 @@ binding.directive('repeat', function(element, scope, dataset){
 		for(index = 0; index < deleted.length; index++){
 			deletedIndex = created.indexOf(deleted[index]);
 
+			parent.removeChild(elements[deletedIndex]);
 			created.splice(deletedIndex, 1);
 			elements.splice(deletedIndex, 1);
 		}
@@ -94,6 +105,7 @@ binding.directive('repeat', function(element, scope, dataset){
 			}
 
 			child = element.cloneNode(true);
+			// child.scoped = true;
 			childScope = Object.create(scope);
 			childScope[local] = array[index];
 			binding.apply(childScope, child);

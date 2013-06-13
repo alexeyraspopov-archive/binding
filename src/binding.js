@@ -26,33 +26,41 @@ binding.adapter = {
 	}
 };
 
-// TODO: bind root element
 binding.apply = function(scope, root){
-	var nodes = children(root), node, skipNodes = [],
-		keys, i, j, directive;
+	var nodes = children(root), index, skipNodes = [], compile;
 
-	for(i = 0; i < nodes.length; i++){
-		node = nodes[i];
+	compile = function(node){
+		var keys, index, directive, scoped;
 
-		if(skipNodes.indexOf(node) > -1){
-			continue;
+		if(skipNodes.indexOf(node) !== -1){
+			return;
 		}
 
 		keys = Object.keys(node.dataset);
 
-		for(j = 0; j < keys.length; j++){
-			directive = directives[keys[j]];
+		for(index = 0; index < keys.length; index++){
+			directive = directives[keys[index]];
 
 			if(!directive){
 				continue;
 			}
 
-			if(directive.scoped){
+			if(directive.scoped/* && !node.scoped*/){
 				skipNodes = skipNodes.concat(children(node));
 			}
 
 			directive(node, scope, node.dataset);
+
+			/*if(node.scoped){
+				break;
+			}*/
 		}
+	};
+
+	// compile(root);
+
+	for(index = 0; index < nodes.length; index++){
+		compile(nodes[index]);
 	}
 };
 
