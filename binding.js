@@ -29,18 +29,10 @@ binding.adapter = {
 };
 
 binding.apply = function(scope, root){
-	var nodes = children(root), index, skipNodes = [], compile, filters;
-
-	filters = function(node, directive){
-		var pipe = node.dataset[directive].split(/\s*\|\s*/);
-
-		node.dataset[directive] = pipe[0];
-
-		return pipe.slice(1);
-	};
+	var nodes = children(root), index, skipNodes = [], compile;
 
 	compile = function(node){
-		var keys, index, directive, filter, scoped;
+		var keys, index, directive, scoped;
 
 		if(skipNodes.indexOf(node) !== -1){
 			return;
@@ -50,27 +42,18 @@ binding.apply = function(scope, root){
 
 		for(index = 0; index < keys.length; index++){
 			directive = directives[keys[index]];
-			filter = filters(node, keys[index]);
-
-			console.log(filter);
 
 			if(!directive){
 				continue;
 			}
 
-			if(directive.scoped/* && !node.scoped*/){
+			if(directive.scoped){
 				skipNodes = skipNodes.concat(children(node));
 			}
 
-			directive(node, scope, node.dataset, filter);
-
-			/*if(node.scoped){
-				break;
-			}*/
+			directive(node, scope, node.dataset);
 		}
 	};
-
-	// compile(root);
 
 	for(index = 0; index < nodes.length; index++){
 		compile(nodes[index]);
@@ -146,11 +129,6 @@ binding.directive('repeat', function(element, scope, dataset){
 		created = [],
 		tick = 0;
 
-	/*if(element.scoped){
-		return;
-	}*/
-
-	// element.scoped = true;
 	parent.insertBefore(marker, element);
 	parent.removeChild(element);
 
@@ -190,8 +168,7 @@ binding.directive('repeat', function(element, scope, dataset){
 			}
 
 			child = element.cloneNode(true);
-			// child.scoped = true;
-			childScope = Object.create(scope);
+				childScope = Object.create(scope);
 			childScope[local] = array[index];
 			binding.apply(childScope, child);
 

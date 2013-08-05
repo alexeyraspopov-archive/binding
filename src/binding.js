@@ -45,19 +45,13 @@ binding.apply = function(scope, root){
 				continue;
 			}
 
-			if(directive.scoped/* && !node.scoped*/){
+			if(directive.scoped){
 				skipNodes = skipNodes.concat(children(node));
 			}
 
 			directive(node, scope, node.dataset);
-
-			/*if(node.scoped){
-				break;
-			}*/
 		}
 	};
-
-	// compile(root);
 
 	for(index = 0; index < nodes.length; index++){
 		compile(nodes[index]);

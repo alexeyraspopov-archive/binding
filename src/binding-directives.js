@@ -61,11 +61,6 @@ binding.directive('repeat', function(element, scope, dataset){
 		created = [],
 		tick = 0;
 
-	/*if(element.scoped){
-		return;
-	}*/
-
-	// element.scoped = true;
 	parent.insertBefore(marker, element);
 	parent.removeChild(element);
 
@@ -105,8 +100,7 @@ binding.directive('repeat', function(element, scope, dataset){
 			}
 
 			child = element.cloneNode(true);
-			// child.scoped = true;
-			childScope = Object.create(scope);
+				childScope = Object.create(scope);
 			childScope[local] = array[index];
 			binding.apply(childScope, child);
 
