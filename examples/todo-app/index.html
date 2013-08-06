@@ -2,9 +2,23 @@
 <html lang="en-us">
 <head>
 	<meta charset="utf-8">
-	<title></title>
+	<title>Todo Application</title>
 </head>
 <body>
+	<section data-controller="TodoCtrl">
+		<input type="text" data-model="title" data-submit="addTodo(title)">
 
+		<ul>
+			<li data-repeat="todo in todos">
+				<input type="checkbox" data-model="todo.done">
+				<label data-bind="todo.title"></label>
+				<button data-click="removeTodo(todo)">Remove</button>
+			</li>
+		</ul>
+
+		<p>Tasks count: <span data-bind="todos.length"></span></p>
+	</section>
+
+	<script src="../../binding.js"></script>
 </body>
 </html>
