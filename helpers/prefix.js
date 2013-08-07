@@ -1,2 +1,0 @@
-(function(factory){
-	'use strict';

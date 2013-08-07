@@ -1,0 +1,15 @@
+{
+  "name": "binding",
+  "version": "0.0.1",
+  "main": "binding.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "watcher": "alexeyraspopov/watcher#~0.5.1"
+  }
+}
