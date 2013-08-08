@@ -174,5 +174,7 @@
 		}
 	};
 
-	window.applyBindings = apply;
+	window.binding = {
+		apply: apply
+	};
 })();
